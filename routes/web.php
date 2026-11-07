@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Kasir\PosController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -64,6 +65,13 @@ Route::middleware(['auth', 'verified', 'role:kasir'])
     ->name('kasir.')
     ->group(function () {
         Route::get('/dashboard', fn () => view('dashboards.kasir'))->name('dashboard');
+
+        Route::get('/pos', [PosController::class, 'index'])->name('pos');
+        Route::post('/pos/cart', [PosController::class, 'addToCart'])->name('pos.cart.add');
+        Route::patch('/pos/cart/{product}', [PosController::class, 'updateCart'])->name('pos.cart.update');
+        Route::delete('/pos/cart/{product}', [PosController::class, 'removeFromCart'])->name('pos.cart.remove');
+        Route::delete('/pos/cart', [PosController::class, 'clearCart'])->name('pos.cart.clear');
+        Route::post('/pos/checkout', [PosController::class, 'checkout'])->name('pos.checkout');
     });
 
 require __DIR__.'/auth.php';

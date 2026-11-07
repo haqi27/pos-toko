@@ -79,6 +79,10 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        if ($product->transactionItems()->exists()) {
+            return back()->with('error', 'Produk tidak bisa dihapus karena sudah pernah terjual. Ubah stoknya menjadi 0 sebagai gantinya.');
+        }
+
         $product->delete();
 
         return redirect()

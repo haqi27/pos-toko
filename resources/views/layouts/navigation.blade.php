@@ -23,6 +23,11 @@
                             Produk
                         </x-nav-link>
                     @endhasanyrole
+                    @role('kasir')
+                        <x-nav-link :href="route('kasir.pos')" :active="request()->routeIs('kasir.pos*')">
+                            Kasir
+                        </x-nav-link>
+                    @endrole
                 </div>
             </div>
 
